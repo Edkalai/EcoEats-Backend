@@ -25,12 +25,23 @@ model Food {
   name              String
   description       String
   img               String?  
+  quantity          Float?
+  unit              String?
   inventories       Inventory[]
+  recipes           Recipes[]
 }
 
 model Inventory {
   id                Int        @id @default(autoincrement())
   user              User       @relation("InventoryToUser", fields:[userId] , references: [id])
   userId            Int        @unique
+  foods             Food[]
+}
+
+model Recipes {
+  id                Int        @id @default(autoincrement())
+  name              String
+  description       String
+  img               String?  
   foods             Food[]
 }
