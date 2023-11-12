@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { InventoriesService } from './inventories.service';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
 import { UpdateInventoryDto } from './dto/update-inventory.dto';
+import { AddFoodToInventoryDto } from './dto/add-food-to-inventory.dto';
 
 @Controller('inventories')
 export class InventoriesController {
@@ -22,8 +31,22 @@ export class InventoriesController {
     return this.inventoriesService.findOne(+id);
   }
 
+  @Post('/addFoodToInventory/:id')
+  addFoodToInventory(
+    @Param('id') id: string,
+    @Body() addFoodToInventoryDto: AddFoodToInventoryDto,
+  ) {
+    return this.inventoriesService.addFoodToInventory(
+      +id,
+      addFoodToInventoryDto,
+    );
+  }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInventoryDto: UpdateInventoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateInventoryDto: UpdateInventoryDto,
+  ) {
     return this.inventoriesService.update(+id, updateInventoryDto);
   }
 
