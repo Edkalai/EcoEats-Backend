@@ -30,8 +30,11 @@ export class InventoriesService {
           select: {
             food: {
               select: {
+                id: true,
                 name: true,
                 description: true,
+                barcode: true,
+                category: true,
                 img: true,
               },
             },
@@ -50,6 +53,44 @@ export class InventoriesService {
         inventoryId: id,
         quantity: addFoodtoInventoryDto.quantity,
         unit: addFoodtoInventoryDto.unit,
+      },
+    });
+  }
+
+  async addFoodToInventoryByBarcode(
+    id: number,
+    barcode: string,
+    addFoodtoInventoryDto: AddFoodToInventoryDto,
+  ) {
+    const foodId = await this.prismaService.food.findFirst({
+      where: {
+        barcode: barcode,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return this.prismaService.foodInInventory.create({
+      data: {
+        foodId: foodId.id,
+        inventoryId: id,
+        quantity: addFoodtoInventoryDto.quantity,
+        unit: addFoodtoInventoryDto.unit,
+      },
+    });
+  }
+
+  removeFoodFromInventory(inventoryId: number, foodId: number) {
+    return this.prismaService.foodInInventory.delete({
+      where: {
+        foodId_inventoryId: {
+          inventoryId: inventoryId,
+          foodId: foodId,
+        },
+      },
+      select: {
+        food: true,
       },
     });
   }
