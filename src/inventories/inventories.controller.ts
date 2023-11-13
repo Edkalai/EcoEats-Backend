@@ -42,6 +42,18 @@ export class InventoriesController {
     );
   }
 
+  @Post('/addFoodToInventory/:id/:barcode')
+  addFoodToInventoryByBarcode(
+    @Param('id') id: string,
+    @Param('barcode') barcode: string,
+    @Body() addFoodToInventoryDto: AddFoodToInventoryDto,
+  ) {
+    return this.inventoriesService.addFoodToInventoryByBarcode(
+      +id,
+      barcode,
+      addFoodToInventoryDto,
+    );
+  }
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -53,5 +65,16 @@ export class InventoriesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.inventoriesService.remove(+id);
+  }
+
+  @Delete(':inventoryId/:foodId')
+  removeFoodFromInventory(
+    @Param('inventoryId') inventoryId: string,
+    @Param('foodId') foodId: string,
+  ) {
+    return this.inventoriesService.removeFoodFromInventory(
+      +inventoryId,
+      +foodId,
+    );
   }
 }

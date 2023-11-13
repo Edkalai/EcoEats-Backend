@@ -4,7 +4,8 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class AddFoodToInventoryDto {
   @ApiProperty()
   @IsNumber()
-  foodId: number;
+  @IsOptional()
+  foodId?: number;
 
   @ApiProperty()
   @IsNumber()

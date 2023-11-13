@@ -40,19 +40,21 @@ model Food {
   name              String
   description       String
   category          String?
+  barcode           String?
   img               String?  
   inventories       FoodInInventory[]
   recipes           FoodInRecipe[]
 }
 
 model FoodInInventory {
-  id                Int        @id @default(autoincrement())
-  food              Food       @relation(fields: [foodId], references: [id])
-  foodId            Int
-  inventory         Inventory  @relation(fields: [inventoryId], references: [id])
-  inventoryId       Int
-  quantity          Float      
-  unit              String
+  food          Food       @relation(fields: [foodId], references: [id])
+  foodId        Int
+  inventory     Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId   Int
+  quantity      Float      
+  unit          String
+
+  @@id([foodId, inventoryId])
 }
 
 model FoodInRecipe {
