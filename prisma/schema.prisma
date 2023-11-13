@@ -18,7 +18,8 @@ model User {
   lastName          String
   img               String?
   inventory         Inventory?  @relation("InventoryToUser")
-  events            Event[]
+  eventsC            Event[]     @relation("EventsCreated")
+  eventsP            Event[]     @relation("EventsParticipation")
 }
 
 model Inventory {
@@ -40,19 +41,22 @@ model Food {
   id                Int        @id @default(autoincrement())
   name              String
   description       String
+  category          String?
+  barcode           String?
   img               String?  
   inventories       FoodInInventory[]
   recipes           FoodInRecipe[]
 }
 
 model FoodInInventory {
-  id                Int        @id @default(autoincrement())
-  food              Food       @relation(fields: [foodId], references: [id])
-  foodId            Int
-  inventory         Inventory  @relation(fields: [inventoryId], references: [id])
-  inventoryId       Int
-  quantity          Float      
-  unit              String
+  food          Food       @relation(fields: [foodId], references: [id])
+  foodId        Int
+  inventory     Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId   Int
+  quantity      Float      
+  unit          String
+
+  @@id([foodId, inventoryId])
 }
 
 model FoodInRecipe {
@@ -72,6 +76,7 @@ model Event {
   img               String?
   date              String?
   place             String?
-  userId            Int
-  user              User  @relation(fields: [userId], references: [id])
+  users             User[] @relation("EventsParticipation")
+  ownerId           Int 
+  owner             User  @relation("EventsCreated",fields: [ownerId], references: [id])
 }
