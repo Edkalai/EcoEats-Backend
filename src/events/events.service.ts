@@ -7,17 +7,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class EventsService {
   constructor(private readonly prismaService: PrismaService) {}
   create(createEventDto: CreateEventDto) {
-    
     return this.prismaService.event.create({
       data: {
         name: createEventDto.name,
         description: createEventDto.description,
         place: createEventDto.location,
         date: createEventDto.date,
-        userId:createEventDto.userId
+        ownerId: createEventDto.userId,
       },
-    }
-    );
+    });
   }
 
   findAll() {
