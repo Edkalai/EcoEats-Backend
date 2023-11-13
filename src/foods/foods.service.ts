@@ -14,6 +14,13 @@ export class FoodsService {
     return this.prismaService.food.findMany();
   }
 
+  findByCategory(category: string) {
+    return this.prismaService.food.findMany({
+      where: {
+        category: category,
+      },
+    });
+  }
   findOne(id: number) {
     return `This action returns a #${id} food`;
   }

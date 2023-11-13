@@ -26,7 +26,19 @@ export class InventoriesService {
         userId: userId,
       },
       select: {
-        foods: true,
+        foods: {
+          select: {
+            food: {
+              select: {
+                name: true,
+                description: true,
+                img: true,
+              },
+            },
+            quantity: true,
+            unit: true,
+          },
+        },
       },
     });
   }
