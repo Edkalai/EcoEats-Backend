@@ -18,6 +18,7 @@ model User {
   lastName          String
   img               String?
   inventory         Inventory?  @relation("InventoryToUser")
+  events            Event[]
 }
 
 model Inventory {
@@ -62,4 +63,15 @@ model FoodInRecipe {
   recipeId          Int
   quantity          Float  
   unit              String    
+}
+
+model Event {
+  id                Int        @id @default(autoincrement())
+  name              String
+  description       String
+  img               String?
+  date              String?
+  place             String?
+  userId            Int
+  user              User  @relation(fields: [userId], references: [id])
 }
