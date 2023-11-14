@@ -20,6 +20,7 @@ model User {
   inventory         Inventory?  @relation("InventoryToUser")
   eventsC            Event[]     @relation("EventsCreated")
   eventsP            Event[]     @relation("EventsParticipation")
+  FavoriteEvents     Event[]      @relation("FavoriteEvents")
 }
 
 model Inventory {
@@ -78,5 +79,6 @@ model Event {
   place             String?
   users             User[] @relation("EventsParticipation")
   ownerId           Int 
-  owner             User  @relation("EventsCreated",fields: [ownerId], references: [id])
+  owner             User   @relation("EventsCreated",fields: [ownerId], references: [id])
+  favoriteUsers     User[] @relation("FavoriteEvents")
 }
