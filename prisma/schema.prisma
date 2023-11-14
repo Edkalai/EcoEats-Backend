@@ -18,6 +18,7 @@ model User {
   lastName          String
   img               String?
   inventory         Inventory?  @relation("InventoryToUser")
+  favoriteRecipes   Recipes[]  @relation("UserToFavorites")
 }
 
 model Food {
@@ -25,7 +26,10 @@ model Food {
   name              String
   description       String
   img               String?  
+  quantity          Float?
+  unit              String?
   inventories       Inventory[]
+
 }
 
 model Inventory {
@@ -33,4 +37,17 @@ model Inventory {
   user              User       @relation("InventoryToUser", fields:[userId] , references: [id])
   userId            Int        @unique
   foods             Food[]
+}
+
+
+model Recipes {
+  id                Int        @id @default(autoincrement())
+  image             String?
+  title             String
+  description       String
+  ingredient        String?  
+  quantity          Int
+  comment           String?
+  favoritedBy       User[]    @relation("UserToFavorites")
+
 }
