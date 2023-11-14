@@ -39,7 +39,6 @@ model Food {
   barcode           String?
   img               String?  
   inventories       FoodInInventory[]
-  recipes           FoodInRecipe[]
 }
 
 model FoodInInventory {
@@ -53,15 +52,6 @@ model FoodInInventory {
   @@id([foodId, inventoryId])
 }
 
-model FoodInRecipe {
-  id                Int        @id @default(autoincrement())
-  food              Food       @relation(fields: [foodId], references: [id])
-  foodId            Int
-  recipe            Recipes    @relation(fields: [recipeId], references: [id])
-  recipeId          Int
-  quantity          Float  
-  unit              String    
-}
 
 
 model Recipes {
@@ -73,7 +63,7 @@ model Recipes {
   quantity          Int
   comment           String?
   favoritedBy       User[]    @relation("UserToFavorites")
-
+}
 model Event {
   id                Int        @id @default(autoincrement())
   name              String
