@@ -19,24 +19,48 @@ model User {
   img               String?
   inventory         Inventory?  @relation("InventoryToUser")
   favoriteRecipes   Recipes[]  @relation("UserToFavorites")
+  eventsC            Event[]     @relation("EventsCreated")
+  eventsP            Event[]     @relation("EventsParticipation")
 }
+
+model Inventory {
+  id                Int              @id @default(autoincrement())
+  user              User             @relation("InventoryToUser", fields:[userId] , references: [id])
+  userId            Int              @unique
+  foods             FoodInInventory[] 
+}
+
 
 model Food {
   id                Int        @id @default(autoincrement())
   name              String
   description       String
+  category          String?
+  barcode           String?
   img               String?  
-  quantity          Float?
-  unit              String?
-  inventories       Inventory[]
-
+  inventories       FoodInInventory[]
+  recipes           FoodInRecipe[]
 }
 
-model Inventory {
+model FoodInInventory {
+  food          Food       @relation(fields: [foodId], references: [id])
+  foodId        Int
+  inventory     Inventory  @relation(fields: [inventoryId], references: [id])
+  inventoryId   Int
+  quantity      Float      
+  unit          String
+
+  @@id([foodId, inventoryId])
+}
+
+model FoodInRecipe {
   id                Int        @id @default(autoincrement())
-  user              User       @relation("InventoryToUser", fields:[userId] , references: [id])
-  userId            Int        @unique
-  foods             Food[]
+  food              Food       @relation(fields: [foodId], references: [id])
+  foodId            Int
+  recipe            Recipes    @relation(fields: [recipeId], references: [id])
+  recipeId          Int
+  quantity          Float  
+  unit              String    
 }
 
 
@@ -49,5 +73,35 @@ model Recipes {
   quantity          Int
   comment           String?
   favoritedBy       User[]    @relation("UserToFavorites")
+
+model Event {
+  id                Int        @id @default(autoincrement())
+  name              String
+  description       String
+  img               String?
+  date              String?
+  place             String?
+  users             User[] @relation("EventsParticipation")
+  ownerId           Int 
+  owner             User  @relation("EventsCreated",fields: [ownerId], references: [id])
+}
+
+model Donation {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+  adress      String
+
+}
+
+model Location {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+
 
 }
