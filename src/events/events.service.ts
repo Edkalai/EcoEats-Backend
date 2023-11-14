@@ -13,7 +13,9 @@ export class EventsService {
         description: createEventDto.description,
         place: createEventDto.location,
         date: createEventDto.date,
-        ownerId: createEventDto.userId,
+        ownerId: +createEventDto.userId,
+        img:createEventDto.imageName
+        
       },
     });
   }

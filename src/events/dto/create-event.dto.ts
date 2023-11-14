@@ -23,6 +23,10 @@ export class CreateEventDto {
     userId: number;
 
 
+    @ApiProperty()
+    @IsString()
+    imageName: string;
+
 
 
 }
