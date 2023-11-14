@@ -19,16 +19,6 @@ CREATE TABLE "Inventory" (
 );
 
 -- CreateTable
-CREATE TABLE "Recipes" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "img" TEXT,
-
-    CONSTRAINT "Recipes_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Food" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -51,14 +41,16 @@ CREATE TABLE "FoodInInventory" (
 );
 
 -- CreateTable
-CREATE TABLE "FoodInRecipe" (
+CREATE TABLE "Recipes" (
     "id" SERIAL NOT NULL,
-    "foodId" INTEGER NOT NULL,
-    "recipeId" INTEGER NOT NULL,
-    "quantity" DOUBLE PRECISION NOT NULL,
-    "unit" TEXT NOT NULL,
+    "image" TEXT,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "ingredient" TEXT,
+    "quantity" INTEGER NOT NULL,
+    "comment" TEXT,
 
-    CONSTRAINT "FoodInRecipe_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Recipes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -75,6 +67,33 @@ CREATE TABLE "Event" (
 );
 
 -- CreateTable
+CREATE TABLE "Donation" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "imagePath" TEXT NOT NULL,
+    "adress" TEXT NOT NULL,
+
+    CONSTRAINT "Donation_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Location" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "imagePath" TEXT NOT NULL,
+
+    CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_UserToFavorites" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_EventsParticipation" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
@@ -85,6 +104,12 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Inventory_userId_key" ON "Inventory"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_UserToFavorites_AB_unique" ON "_UserToFavorites"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_UserToFavorites_B_index" ON "_UserToFavorites"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_EventsParticipation_AB_unique" ON "_EventsParticipation"("A", "B");
@@ -102,13 +127,13 @@ ALTER TABLE "FoodInInventory" ADD CONSTRAINT "FoodInInventory_foodId_fkey" FOREI
 ALTER TABLE "FoodInInventory" ADD CONSTRAINT "FoodInInventory_inventoryId_fkey" FOREIGN KEY ("inventoryId") REFERENCES "Inventory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FoodInRecipe" ADD CONSTRAINT "FoodInRecipe_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "Food"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FoodInRecipe" ADD CONSTRAINT "FoodInRecipe_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Event" ADD CONSTRAINT "Event_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserToFavorites" ADD CONSTRAINT "_UserToFavorites_A_fkey" FOREIGN KEY ("A") REFERENCES "Recipes"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserToFavorites" ADD CONSTRAINT "_UserToFavorites_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_EventsParticipation" ADD CONSTRAINT "_EventsParticipation_A_fkey" FOREIGN KEY ("A") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -18,6 +18,7 @@ model User {
   lastName          String
   img               String?
   inventory         Inventory?  @relation("InventoryToUser")
+  favoriteRecipes   Recipes[]  @relation("UserToFavorites")
   eventsC            Event[]     @relation("EventsCreated")
   eventsP            Event[]     @relation("EventsParticipation")
   FavoriteEvents     Event[]      @relation("FavoriteEvents")
@@ -30,13 +31,6 @@ model Inventory {
   foods             FoodInInventory[] 
 }
 
-model Recipes {
-  id                Int              @id @default(autoincrement())
-  name              String
-  description       String
-  img               String?  
-  foods             FoodInRecipe[]    
-}
 
 model Food {
   id                Int        @id @default(autoincrement())
@@ -46,7 +40,6 @@ model Food {
   barcode           String?
   img               String?  
   inventories       FoodInInventory[]
-  recipes           FoodInRecipe[]
 }
 
 model FoodInInventory {
@@ -60,16 +53,18 @@ model FoodInInventory {
   @@id([foodId, inventoryId])
 }
 
-model FoodInRecipe {
-  id                Int        @id @default(autoincrement())
-  food              Food       @relation(fields: [foodId], references: [id])
-  foodId            Int
-  recipe            Recipes    @relation(fields: [recipeId], references: [id])
-  recipeId          Int
-  quantity          Float  
-  unit              String    
-}
 
+
+model Recipes {
+  id                Int        @id @default(autoincrement())
+  image             String?
+  title             String
+  description       String
+  ingredient        String?  
+  quantity          Int
+  comment           String?
+  favoritedBy       User[]    @relation("UserToFavorites")
+}
 model Event {
   id                Int        @id @default(autoincrement())
   name              String
@@ -81,4 +76,26 @@ model Event {
   ownerId           Int 
   owner             User   @relation("EventsCreated",fields: [ownerId], references: [id])
   favoriteUsers     User[] @relation("FavoriteEvents")
+
+}
+
+model Donation {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+  adress      String
+
+}
+
+model Location {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+
+
+
 }
