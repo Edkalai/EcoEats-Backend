@@ -9,10 +9,18 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 @Module({
-  imports: [ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '..', 'uploads'),
-    serveRoot: '/images',
-  }),UsersModule, FoodsModule, InventoriesModule, EventsModule],
+
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/images',
+    }),
+    UsersModule,
+    FoodsModule,
+    InventoriesModule,
+    EventsModule,
+  ],
+
   controllers: [AppController],
   providers: [AppService],
 })
