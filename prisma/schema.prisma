@@ -80,3 +80,22 @@ model Event {
   ownerId           Int 
   owner             User  @relation("EventsCreated",fields: [ownerId], references: [id])
 }
+
+model Donation {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+  adress      String
+
+}
+
+model Location {
+
+  id       Int     @id @default(autoincrement())
+  name        String
+  description String
+  imagePath   String
+
+}
