@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { FoodsModule } from './foods/foods.module';
 import { InventoriesModule } from './inventories/inventories.module';
+import { DonationsModule } from './donations/donations.module';
+import { LocationsModule } from './locations/locations.module';
 import { EventsModule } from './events/events.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -19,6 +21,8 @@ import { join } from 'path';
     FoodsModule,
     InventoriesModule,
     EventsModule,
+    DonationsModule, 
+    LocationsModule
   ],
 
   controllers: [AppController],
